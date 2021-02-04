@@ -1,0 +1,66 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Player/NewPlayer.gd" type="Script" id=1]
+[ext_resource path="res://Player/CanvasLayer.gd" type="Script" id=2]
+
+[sub_resource type="Theme" id=1]
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 1, 0.0117647, 0.0117647, 1 )
+border_width_left = 2
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+
+[sub_resource type="CapsuleShape" id=3]
+radius = 0.5
+height = 1.5
+
+[sub_resource type="CapsuleMesh" id=4]
+radius = 0.5
+mid_height = 1.5
+
+[node name="FPS" type="KinematicBody" groups=[
+"Player",
+]]
+collision_layer = 2
+script = ExtResource( 1 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+script = ExtResource( 2 )
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer"]
+show_behind_parent = true
+margin_right = 657.0
+margin_bottom = 158.0
+rect_scale = Vector2( 0.469308, 0.28067 )
+theme = SubResource( 1 )
+custom_styles/fg = SubResource( 2 )
+value = 100.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
+shape = SubResource( 3 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
+mesh = SubResource( 4 )
+material/0 = null
+
+[node name="Head" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+
+[node name="Camera" type="Camera" parent="Head"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2 )
+
+[node name="AimCast" type="RayCast" parent="Head/Camera"]
+enabled = true
+cast_to = Vector3( 0, 0, -1000 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.5
+one_shot = true
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
